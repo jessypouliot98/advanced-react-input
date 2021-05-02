@@ -6,6 +6,8 @@ export type numberType = 'number' | 'int' | 'uint';
 
 class InputNumber extends BaseInput {
 
+	protected _ref: React.RefObject<HTMLInputElement> = React.createRef();
+
 	public componentDidMount() {
 		this._ref?.current?.addEventListener('keyup', this.onSubmitEvent);
 	}
@@ -46,6 +48,7 @@ class InputNumber extends BaseInput {
 				type={'number'}
 				name={this.props.name}
 				value={this.value}
+				placeholder={this.props.placeholder}
 				onChange={this.onChangeEvent}
 			/>
 		);

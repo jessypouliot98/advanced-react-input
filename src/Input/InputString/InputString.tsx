@@ -5,6 +5,8 @@ export type stringType = 'string' | 'email' | 'url' | 'password' | 'tel';
 
 class InputString extends BaseInput {
 
+	protected _ref: React.RefObject<HTMLInputElement> = React.createRef();
+
 	public componentDidMount() {
 		this._ref?.current?.addEventListener('keyup', this.onSubmitEvent);
 	}
@@ -40,6 +42,7 @@ class InputString extends BaseInput {
 				type={this.type}
 				name={this.props.name}
 				value={this.value}
+				placeholder={this.props.placeholder}
 				onChange={this.onChangeEvent}
 			/>
 		);

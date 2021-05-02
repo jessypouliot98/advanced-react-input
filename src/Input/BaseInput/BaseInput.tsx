@@ -1,9 +1,11 @@
 import React from 'react';
+import { convertToKebabCase } from '../../helper';
 
 export type inputValue = any;
 
-export interface InputProps {
+export interface BaseInputProps {
 	type: string,
+	className?: string,
 	name?: string,
 	value?: inputValue,
 	defaultValue?: inputValue,
@@ -20,16 +22,27 @@ export interface InputProps {
 	onValidate?: (isValid: boolean) => void,
 }
 
-export interface InputState {
-	value: inputValue,
+export interface BaseInputState {
+	value?: inputValue,
 }
 
-class BaseInput extends React.Component<InputProps, InputState> {
+abstract class BaseInput extends React.Component<BaseInputProps, BaseInputState> {
 
-	protected _ref: React.RefObject<HTMLInputElement> = React.createRef();
+	protected _ref: unknown;
+	protected _className: string = '';
 
 	public state = {
 		value: this.props.defaultValue || '',
+	}
+
+	protected get className(): string {
+		if (this._className) {
+			return this._className;
+		}
+
+		this._className = convertToKebabCase((this as any).constructor.name);
+
+		return this._className;
 	}
 
 	protected get useStateValue(): boolean {
@@ -94,8 +107,10 @@ class BaseInput extends React.Component<InputProps, InputState> {
 
 	protected wrap(input: React.ReactChild) {
 		return (
-			<div>
-				{input}
+			<div className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}>
+				<div className={'ari-border-b ari-py-1 ari-px-2'}>
+					{input}
+				</div>
 			</div>
 		);
 	}

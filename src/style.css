@@ -1,0 +1,21 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.ari textarea:focus,
+.ari input:focus {
+	outline: none;
+}
+
+.ari textarea,
+.ari input {
+	display: block;
+	width: 100%;
+}
+
+.ari textarea {
+	min-height: 150px;
+	resize: vertical;
+}
