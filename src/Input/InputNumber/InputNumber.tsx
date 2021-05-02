@@ -1,0 +1,56 @@
+import React from 'react';
+import BaseInput, { inputValue } from '../BaseInput/BaseInput';
+import { normalizeNumber } from './helper';
+
+export type numberType = 'number' | 'int' | 'uint';
+
+class InputNumber extends BaseInput {
+
+	public componentDidMount() {
+		this._ref?.current?.addEventListener('keyup', this.onSubmitEvent);
+	}
+
+	public componentWillUnmount() {
+		this._ref?.current?.removeEventListener('keyup', this.onSubmitEvent);
+	}
+
+	protected filter = (value: inputValue): inputValue => {
+		const normalizedValue = normalizeNumber(value)?.toString() || '';
+
+		switch (this.props.type) {
+			case 'int':
+				value = parseInt(normalizedValue);
+				break;
+
+			case 'uint':
+				value = Math.abs(parseInt(normalizedValue));
+				break;
+		}
+
+		if (this.props.filter) {
+			value = this.props.filter(value);
+		}
+
+		if (Number.isNaN(value)) {
+			value = undefined;
+		}
+
+		return value;
+	}
+
+	render() {
+		console.log(this.value);
+		return this.wrap(
+			<input
+				ref={this._ref}
+				type={'number'}
+				name={this.props.name}
+				value={this.value}
+				onChange={this.onChangeEvent}
+			/>
+		);
+	}
+
+}
+
+export default InputNumber;

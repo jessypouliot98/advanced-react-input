@@ -1,0 +1,40 @@
+{
+  "name": "advanced-react-input",
+  "version": "1.0.0",
+  "description": "A scalable TypeScript React component from inputs",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc",
+    "dev": "webpack serve --hot --inline --port 3000 --open"
+  },
+  "keywords": [
+    "typescript",
+    "react",
+    "input",
+    "javascript",
+    "tailwindcss"
+  ],
+  "author": "JessyP98",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^17.0.4",
+    "@types/react-dom": "^17.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "eslint-plugin-react": "^7.23.2",
+    "html-webpack-plugin": "^5.3.1",
+    "node-sass": "^5.0.0",
+    "ts-loader": "^9.1.1",
+    "typescript": "^4.2.4",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "tailwindcss": "^2.1.2"
+  }
+}
