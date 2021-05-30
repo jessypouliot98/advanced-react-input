@@ -4,15 +4,34 @@
 
 @tailwind utilities;
 
+@media (pointer: coarse) {
+	.ari-touchable {
+		min-height: 40px;
+	}
+}
+
+@media (pointer: fine) {
+	.ari-touchable {
+		min-height: 24px;
+	}
+}
+
 .ari textarea:focus,
 .ari input:focus {
 	outline: none;
 }
 
 .ari textarea,
-.ari input {
+.ari input,
+.ari select {
 	display: block;
 	width: 100%;
+}
+
+.ari input[type="checkbox"]
+.ari input[type="radio"] {
+	display: block;
+	width: auto;
 }
 
 .ari textarea {

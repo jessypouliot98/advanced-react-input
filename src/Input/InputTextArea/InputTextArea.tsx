@@ -19,6 +19,7 @@ class InputTextArea extends BaseInput {
 		return this.wrap(
 			<textarea
 				ref={this._ref}
+				className={'ari-touchable'}
 				name={this.props.name}
 				value={this.value}
 				placeholder={this.props.placeholder}

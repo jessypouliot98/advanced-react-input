@@ -1,7 +1,6 @@
 import React from 'react';
 import { convertToKebabCase } from '../../helper';
-
-export type inputValue = any;
+import { inputValue } from '../../types';
 
 export interface BaseInputProps {
 	type: string,
@@ -26,7 +25,7 @@ export interface BaseInputState {
 	value?: inputValue,
 }
 
-abstract class BaseInput extends React.Component<BaseInputProps, BaseInputState> {
+abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends React.Component<P, BaseInputState> {
 
 	protected _ref: unknown;
 	protected _className: string = '';
@@ -69,19 +68,18 @@ abstract class BaseInput extends React.Component<BaseInputProps, BaseInputState>
 		return true;
 	}
 
-	protected onChangeEvent = (event: React.ChangeEvent<any>) => {
+	protected onChangeEvent: (...params: any) => void = (event: React.ChangeEvent<any>): void => {
 		this.onChange(event.target.value);
 	}
 
 	protected onChange = (value: inputValue) => {
-		console.log({ value })
 		value = this.filter(value);
 
 		if (this.useStateValue) {
-			this.setState({ value });
+			this.setState({ value }, () => {
+				this.props.onChange?.(this.value);
+			});
 		}
-
-		this.props.onChange?.(value);
 	}
 
 	protected onSubmitEvent = (event: KeyboardEvent) => {
@@ -95,7 +93,6 @@ abstract class BaseInput extends React.Component<BaseInputProps, BaseInputState>
 	}
 
 	protected onSubmit = (value: inputValue) => {
-		console.log({ value });
 		const isValid = this.validate(value);
 
 		if (!isValid) {
@@ -110,6 +107,25 @@ abstract class BaseInput extends React.Component<BaseInputProps, BaseInputState>
 			<div className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}>
 				<div className={'ari-border-b ari-py-1 ari-px-2'}>
 					{input}
+				</div>
+			</div>
+		);
+	}
+
+	protected wrapGroup(inputs: React.ReactChild[]) {
+		return (
+			<div className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}>
+				<div className={'ari-border-b'}>
+					{inputs.map(input => React.Children.map(input, child => {
+						if (React.isValidElement(child)) {
+							return React.cloneElement(child, {
+								...child.props,
+								className: [child.props.className || '', 'ari-py-1 ari-px-2'].join(' ')
+							});
+						}
+
+						return child;
+					}))}
 				</div>
 			</div>
 		);

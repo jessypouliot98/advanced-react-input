@@ -62,6 +62,7 @@ class InputDate extends BaseInput {
 		return this.wrap(
 			<input
 				ref={this._ref}
+				className={'ari-touchable'}
 				type={this.type}
 				name={this.props.name}
 				value={this.value}

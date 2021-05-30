@@ -1,6 +1,7 @@
 import React from 'react';
-import BaseInput, { inputValue } from '../BaseInput/BaseInput';
+import BaseInput from '../BaseInput/BaseInput';
 import { normalizeNumber } from './helper';
+import { inputValue } from '../../types';
 
 export type numberType = 'number' | 'int' | 'uint';
 
@@ -41,10 +42,10 @@ class InputNumber extends BaseInput {
 	}
 
 	render() {
-		console.log(this.value);
 		return this.wrap(
 			<input
 				ref={this._ref}
+				className={'ari-touchable'}
 				type={'number'}
 				name={this.props.name}
 				value={this.value}

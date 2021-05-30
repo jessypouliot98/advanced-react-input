@@ -8,7 +8,8 @@
     "build": "npm run build:css && npm run build:script",
     "build:script": "tsc",
     "build:css": "postcss -o ./lib/style.css ./src/style.css",
-    "dev": "webpack serve --hot --inline --port 3000 --open"
+    "dev": "webpack serve --hot --inline --port 3000 --open",
+    "deploy": "rimraf ./lib && npm run build" 
   },
   "keywords": [
     "typescript",
