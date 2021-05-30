@@ -39,6 +39,7 @@ class App extends React.Component<any> {
 				<Input type={'checkbox'} {...props} {...options} />
 				<Input type={'radio'} {...props} {...options} />
 				<Input type={'select'} {...props} {...options} />
+				<Input type={'slider'} {...props} />
 			</div>
 		);
 	}

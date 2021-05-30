@@ -7,9 +7,10 @@ import InputDate, { dateType } from './InputDate/InputDate';
 import InputCheckbox, { checkboxType } from './InputCheckbox/InputCheckbox';
 import InputRadio, { radioType } from './InputRadio/InputRadio';
 import InputSelect, { selectType } from './InputSelect/InputSelect';
+import InputSlider, { sliderType } from './InputSlider/InputSlider';
 import { option } from '../types';
 
-type inputType = stringType | textareaType | numberType | dateType | checkboxType | radioType | selectType;
+type inputType = stringType | textareaType | numberType | dateType | checkboxType | radioType | selectType | sliderType;
 type inputValue = any;
 
 export interface InputProps extends BaseInputProps {
@@ -54,6 +55,9 @@ class Input extends React.Component<InputProps, any> {
 
 			case 'select':
 				return <InputSelect {...this.props as any} />;
+
+			case 'slider':
+				return <InputSlider {...this.props as any} />;
 
 			default:
 				console.error(`Unkown input type: ${this.props.type}`);

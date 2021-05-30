@@ -48,7 +48,7 @@ class InputSelect extends BaseInput<InputSelectProps> {
 	render() {
 		const getOptions = (option: option) => {
 			return (
-				<option value={option.value}>{option.label}</option>
+				<option key={option.value} value={option.value}>{option.label}</option>
 			)
 		};
 

@@ -5,6 +5,7 @@ import { inputValue } from '../../types';
 export interface BaseInputProps {
 	type: string,
 	className?: string,
+	style?: React.CSSProperties,
 	name?: string,
 	value?: inputValue,
 	defaultValue?: inputValue,
@@ -104,7 +105,10 @@ abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends Reac
 
 	protected wrap(input: React.ReactChild) {
 		return (
-			<div className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}>
+			<div
+				className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}
+				style={this.props.style}
+			>
 				<div className={'ari-border-b ari-py-1 ari-px-2'}>
 					{input}
 				</div>
@@ -114,7 +118,10 @@ abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends Reac
 
 	protected wrapGroup(inputs: React.ReactChild[]) {
 		return (
-			<div className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}>
+			<div
+				className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}
+				style={this.props.style}
+			>
 				<div className={'ari-border-b'}>
 					{inputs.map(input => React.Children.map(input, child => {
 						if (React.isValidElement(child)) {
