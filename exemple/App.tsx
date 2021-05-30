@@ -3,6 +3,10 @@ import { Input } from '../';
 
 class App extends React.Component<any> {
 
+	state: any = {
+		checkbox: [],
+	}
+
 	render() {
 		const props = {
 			className: 'input',
@@ -16,7 +20,6 @@ class App extends React.Component<any> {
 				{ value: '2', label: '2' },
 				{ value: '3', label: '3' },
 			],
-			defaultValue: [],
 		};
 
 		return (
@@ -36,7 +39,7 @@ class App extends React.Component<any> {
 				<Input type={'month'} {...props} />
 				<Input type={'week'} {...props} />
 				<Input type={'day'} {...props} />
-				<Input type={'checkbox'} {...props} {...options} />
+				<Input type={'checkbox'} {...props} {...options} value={this.state.checkbox} onChange={v => this.setState({ checkbox: v })} />
 				<Input type={'radio'} {...props} {...options} />
 				<Input type={'select'} {...props} {...options} />
 				<Input type={'slider'} {...props} />

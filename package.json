@@ -1,6 +1,6 @@
 {
   "name": "advanced-react-input",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A scalable TypeScript React component from inputs",
   "main": "./lib/index.js",
   "scripts": {

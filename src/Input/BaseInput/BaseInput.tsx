@@ -77,10 +77,10 @@ abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends Reac
 		value = this.filter(value);
 
 		if (this.useStateValue) {
-			this.setState({ value }, () => {
-				this.props.onChange?.(this.value);
-			});
+			this.setState({ value });
 		}
+
+		this.props.onChange?.(value);
 	}
 
 	protected onSubmitEvent = (event: KeyboardEvent) => {

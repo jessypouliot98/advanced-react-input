@@ -22,5 +22,8 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "exemple"]
+  "exclude": [
+    "node_modules",
+    "exemple"
+  ]
 }
