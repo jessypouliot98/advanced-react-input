@@ -49,7 +49,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ className, type, isChecked, size, o
 		<button
 			className={[
 				className,
-				'ari-border ari-border-gray-700',
+				'ari-border ari-border-gray-700 focus:ari-outline-none',
 				getSize(),
 				getStyle(),
 				getState(),

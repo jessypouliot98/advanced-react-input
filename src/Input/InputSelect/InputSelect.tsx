@@ -34,15 +34,10 @@ class InputSelect extends BaseInput<InputSelectProps> {
 		return this.value.some(value => value === option.value);
 	}
 
-	protected onChangeEvent = (option: option): void => {
-		const isSelected = this.isSelected(option);
+	protected onChangeEvent = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+		const value = e.target.value;
 
-		if (isSelected) {
-			this.onChange(undefined);
-			return;
-		}
-
-		this.onChange([option.value]);
+		this.onChange(value);
 	}
 
 	render() {
@@ -53,7 +48,10 @@ class InputSelect extends BaseInput<InputSelectProps> {
 		};
 
 		return this.wrap((
-			<select className={'ari-touchable'}>
+			<select
+				className={'ari-touchable focus:ari-outline-none'}
+				onChange={this.onChangeEvent}
+			>
 				{this.props.options.map(option => getOptions(option))}
 			</select>
 		));

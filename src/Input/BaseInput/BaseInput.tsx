@@ -1,9 +1,9 @@
 import React from 'react';
-import { convertToKebabCase } from '../../helper';
 import { inputValue } from '../../types';
+import { inputType } from '../Input';
 
 export interface BaseInputProps {
-	type: string,
+	type: inputType,
 	className?: string,
 	style?: React.CSSProperties,
 	name?: string,
@@ -15,6 +15,7 @@ export interface BaseInputProps {
 	readOnly?: boolean,
 	filter?: <T>(value: T) => T,
 	match?: RegExp | (<T>(value: T) => boolean),
+	onMount?: <T>(value: T) => void,
 	onChange?: <T>(value: T) => void,
 	onSubmit?: <T>(value: T) => void,
 	onFocus?: (ref: React.Ref<any>) => void,
@@ -29,20 +30,13 @@ export interface BaseInputState {
 abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends React.Component<P, BaseInputState> {
 
 	protected _ref: unknown;
-	protected _className: string = '';
 
 	public state = {
 		value: this.props.defaultValue || '',
 	}
 
-	protected get className(): string {
-		if (this._className) {
-			return this._className;
-		}
-
-		this._className = convertToKebabCase((this as any).constructor.name);
-
-		return this._className;
+	public componentDidMount() {
+		this.props.onMount?.(this.value);
 	}
 
 	protected get useStateValue(): boolean {
@@ -73,11 +67,11 @@ abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends Reac
 		this.onChange(event.target.value);
 	}
 
-	protected onChange = (value: inputValue) => {
+	protected onChange = (value: inputValue, callback?: () => void) => {
 		value = this.filter(value);
 
 		if (this.useStateValue) {
-			this.setState({ value });
+			this.setState({ value }, callback);
 		}
 
 		this.props.onChange?.(value);
@@ -103,39 +97,40 @@ abstract class BaseInput<P extends BaseInputProps = BaseInputProps> extends Reac
 		this.props.onSubmit?.(value);
 	}
 
-	protected wrap(input: React.ReactChild) {
+	protected wrapper(content: React.ReactChild) {
 		return (
 			<div
-				className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}
+				className={['ari', `ari-type-${this.props.type}`, this.props.className].join(' ')}
 				style={this.props.style}
 			>
-				<div className={'ari-border-b ari-py-1 ari-px-2'}>
-					{input}
-				</div>
+				{content}
 			</div>
 		);
 	}
 
-	protected wrapGroup(inputs: React.ReactChild[]) {
-		return (
-			<div
-				className={['ari', `ari-${this.className}`, `ari-type-${this.props.type}`, this.props.className].join(' ')}
-				style={this.props.style}
-			>
-				<div className={'ari-border-b'}>
-					{inputs.map(input => React.Children.map(input, child => {
-						if (React.isValidElement(child)) {
-							return React.cloneElement(child, {
-								...child.props,
-								className: [child.props.className || '', 'ari-py-1 ari-px-2'].join(' ')
-							});
-						}
-
-						return child;
-					}))}
-				</div>
+	protected wrap(input: React.ReactChild) {
+		return this.wrapper((
+			<div className={'ari-border-b ari-py-1 ari-px-2'}>
+				{input}
 			</div>
-		);
+		));
+	}
+
+	protected wrapGroup(inputs: React.ReactChild[]) {
+		return this.wrapper((
+			<div className={'ari-border-b'}>
+				{inputs.map(input => React.Children.map(input, child => {
+					if (React.isValidElement(child)) {
+						return React.cloneElement(child, {
+							...child.props,
+							className: [child.props.className || '', 'ari-py-1 ari-px-2'].join(' ')
+						});
+					}
+
+					return child;
+				}))}
+			</div>
+		));
 	}
 
 }

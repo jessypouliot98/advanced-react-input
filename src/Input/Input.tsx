@@ -4,13 +4,15 @@ import InputString, { stringType } from './InputString/InputString';
 import InputTextArea, { textareaType } from './InputTextArea/InputTextArea';
 import InputNumber, { numberType } from './InputNumber/InputNumber';
 import InputDate, { dateType } from './InputDate/InputDate';
+import InputBoolean, { booleanType } from './InputBoolean/InputBoolean';
 import InputCheckbox, { checkboxType } from './InputCheckbox/InputCheckbox';
 import InputRadio, { radioType } from './InputRadio/InputRadio';
 import InputSelect, { selectType } from './InputSelect/InputSelect';
 import InputSlider, { sliderType } from './InputSlider/InputSlider';
+import InputRepeater, { repeaterType } from './InputRepeater/InputRepeater';
 import { option } from '../types';
 
-type inputType = stringType | textareaType | numberType | dateType | checkboxType | radioType | selectType | sliderType;
+export type inputType = stringType | textareaType | numberType | dateType | booleanType | checkboxType | radioType | selectType | sliderType | repeaterType;
 type inputValue = any;
 
 export interface InputProps extends BaseInputProps {
@@ -18,6 +20,7 @@ export interface InputProps extends BaseInputProps {
 	value?: inputValue,
 	defaultValue?: inputValue,
 	options?: option[],
+	subType?: inputType,
 }
 
 class Input extends React.Component<InputProps, any> {
@@ -47,6 +50,9 @@ class Input extends React.Component<InputProps, any> {
 			case 'day':
 				return <InputDate {...this.props} />;
 
+			case 'boolean':
+				return <InputBoolean {...this.props as any} />;
+
 			case 'checkbox':
 				return <InputCheckbox {...this.props as any} />;
 
@@ -58,6 +64,9 @@ class Input extends React.Component<InputProps, any> {
 
 			case 'slider':
 				return <InputSlider {...this.props as any} />;
+
+			case 'repeater':
+				return <InputRepeater {...this.props as any} />
 
 			default:
 				console.error(`Unkown input type: ${this.props.type}`);

@@ -47,7 +47,7 @@ class InputRadio extends BaseInput<InputRadioProps> {
 			return;
 		}
 
-		this.onChange([option.value]);
+		this.onChange(option.value);
 	}
 
 	render() {

@@ -45,9 +45,12 @@ const App = () => (
 		<Input type={'month'} {...props} />
 		<Input type={'week'} {...props} />
 		<Input type={'day'} {...props} />
+		<Input type={'boolean'} {...props} {...options} />,
 		<Input type={'checkbox'} {...props} {...options} />
 		<Input type={'radio'} {...props} {...options} />
 		<Input type={'select'} {...props} {...options} />
+		<Input type={'slider'} {...props} />
+		<Input type={'repeater'} subType={'boolean'} {...props} />
 	</div>
 );
 ```
