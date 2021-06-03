@@ -1,6 +1,6 @@
 {
   "name": "advanced-react-input",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "A scalable TypeScript React component from inputs",
   "main": "./lib/index.js",
   "scripts": {
@@ -19,6 +19,10 @@
     "tailwindcss"
   ],
   "author": "JessyP98",
+  "repository": "github:jessypouliot98/advanced-react-input",
+  "bugs": {
+    "url": "https://github.com/jessypouliot98/advanced-react-input/issues"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^17.0.4",
