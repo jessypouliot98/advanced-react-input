@@ -2,7 +2,11 @@ import React from 'react';
 import BaseInput, { BaseInputProps, BaseInputState } from '../BaseInput/BaseInput';
 import Input, { inputType } from '../Input';
 import Button from '../../Button/Button';
-import uniqid from 'uniqid';
+
+let id = 0;
+const uniqid = () => {
+	return ++id;
+}
 
 export type repeaterType = 'repeater';
 
