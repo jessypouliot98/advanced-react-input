@@ -1,6 +1,6 @@
 {
   "name": "advanced-react-input",
-  "version": "2.1.4",
+  "version": "3.0.0-beta",
   "description": "A scalable TypeScript React component from inputs",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -9,6 +9,7 @@
     "/lib"
   ],
   "scripts": {
+    "dev": "tsc --watch",
     "build": "npm run build:css && npm run build:js",
     "build:css": "postcss -o ./lib/style.css ./src/style.css",
     "build:js": "npm run build:esm && npm run build:cjs",
@@ -43,5 +44,8 @@
   "peerDependencies": {
     "react": ">= 17.0.2",
     "react-dom": ">= 17.0.2"
+  },
+  "dependencies": {
+    "clsx": "^1.1.1"
   }
 }
