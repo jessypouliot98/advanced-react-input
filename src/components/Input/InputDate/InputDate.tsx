@@ -1,15 +1,18 @@
 import React from 'react';
-import { useInputStyle, useInputValue } from '../../../hooks';
+import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
 import { InputPropTypes } from '../../../types';
 import { onInputChange } from '../../../utils/dom';
 
 export type types = 'date';
 
-export interface InputDateProps extends InputPropTypes<string> { }
+export interface InputDateProps extends InputPropTypes<string> {
+	placeholder?: string,
+}
 
 const InputDate: React.FC<InputDateProps> = (props) => {
 	const { inputStyle, containerStyle } = useInputStyle(props, 'date');
-	const { value, setValue } = useInputValue<string>(props);
+	const { value, setValue } = useInputValue<typeof props.value>(props);
+	const { event } = useInputEvent<typeof props.value>(props, value);
 
 	return (
 		<div className={containerStyle} style={props.style}>
@@ -18,9 +21,11 @@ const InputDate: React.FC<InputDateProps> = (props) => {
 				name={props.name}
 				type={'date'}
 				value={value || ''}
+				placeholder={props.placeholder}
+				disabled={props.disabled}
 				onChange={onInputChange(setValue)}
-				onFocus={props.onFocus}
-				onBlur={props.onBlur}
+				onFocus={event.onFocus}
+				onBlur={event.onBlur}
 			/>
 		</div>
 	)

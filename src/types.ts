@@ -1,16 +1,18 @@
 export type obj<T = any> = { [key: string]: T };
 
+export type focusableCallbackProp<V> = { ref: null, value?: V };
+
 export interface InputPropTypes<T = string> {
 	className?: string,
 	style?: React.CSSProperties,
 	name?: string,
 	value?: T,
 	defaultValue?: T,
-	required?: boolean,
+	// required?: boolean, @TODO
 	disabled?: boolean,
 	onChange: onChangeFunction<T>,
-	onFocus?: () => void,
-	onBlur?: () => void,
+	onFocus?: (params: focusableCallbackProp<T>) => void,
+	onBlur?: (params: focusableCallbackProp<T>) => void,
 }
 
 export type onChangeFunction<T = string> = (value?: T) => void;

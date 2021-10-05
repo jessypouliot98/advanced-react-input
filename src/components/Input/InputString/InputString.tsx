@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInputStyle, useInputValue } from '../../../hooks';
+import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
 import { InputPropTypes } from '../../../types';
 import { onInputChange } from '../../../utils/dom';
 
@@ -7,6 +7,7 @@ export type types = 'string' | 'password' | 'email' | 'url' | 'tel';
 
 export interface InputStringProps extends InputPropTypes<string> {
 	type: types,
+	placeholder?: string,
 }
 
 export const mapStringTypesToInputType = (type: types) => {
@@ -21,7 +22,8 @@ export const mapStringTypesToInputType = (type: types) => {
 
 const InputString: React.FC<InputStringProps> = (props) => {
 	const { inputStyle, containerStyle } = useInputStyle(props, 'string', props.type);
-	const { value, setValue } = useInputValue<string>(props);
+	const { value, setValue } = useInputValue<typeof props.value>(props);
+	const { event } = useInputEvent<typeof props.value>(props, value);
 
 	return (
 		<div className={containerStyle} style={props.style}>
@@ -30,9 +32,11 @@ const InputString: React.FC<InputStringProps> = (props) => {
 				name={props.name}
 				type={mapStringTypesToInputType(props.type)}
 				value={value || ''}
+				placeholder={props.placeholder}
+				disabled={props.disabled}
 				onChange={onInputChange(setValue)}
-				onFocus={props.onFocus}
-				onBlur={props.onBlur}
+				onFocus={event.onFocus}
+				onBlur={event.onBlur}
 			/>
 		</div>
 	)

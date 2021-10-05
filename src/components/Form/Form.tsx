@@ -26,8 +26,6 @@ const Form: React.FC<FormProps> = (props) => {
 			e.stopPropagation();
 		}
 
-		console.log(data);
-
 		props.onSubmit?.(data);
 	}
 

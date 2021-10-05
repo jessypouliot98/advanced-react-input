@@ -49,17 +49,39 @@ export const useInputValue = <T = string>(props: useInputValueParams<T>): useInp
 	return payload;
 }
 
-export interface useInputStyleReturn {
-	inputStyle: string,
-	containerStyle: string,
-}
-
-export const useInputStyle = (props: InputPropTypes<any>, name: string, type?: string): useInputStyleReturn => {
-	const containerClassId = `ari-container-${name}`;
-	const inputClassId = `ari-input-${name}`;
+export const useInputStyle = (props: InputPropTypes<any>, name: string, type?: string) => {
+	const containerClass = 'ari-container';
+	const inputClass = 'ari-input';
+	const containerClassId = `${containerClass}-${name}`;
+	const inputClassId = `${inputClass}-${name}`;
 	
 	return {
-		containerStyle: clsx(containerClassId, !!type && `${containerClassId}--${type}`, props.className),
-		inputStyle: clsx(inputClassId, !!type && `${inputClassId}--${type}`),
+		containerStyle: clsx(
+			containerClass,
+			containerClassId,
+			!!type && `${containerClassId}--${type}`,
+			props.disabled && `${containerClass}--disabled`,
+			props.className,
+		),
+		inputStyle: clsx(
+			inputClass,
+			inputClassId,
+			!!type && `${inputClassId}--${type}`,
+		),
+	}
+}
+
+export const useInputEvent = <T = any>(props: InputPropTypes<any>, value: T) => {
+	const inputRef = null;
+
+	return {
+		event: {
+			onFocus: () => {
+				props.onFocus?.({ ref: inputRef, value });
+			},
+			onBlur: () => {
+				props.onBlur?.({ ref: inputRef, value });
+			}
+		},
 	}
 }

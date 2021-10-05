@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInputStyle, useInputValue } from '../../../hooks';
+import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
 import { InputPropTypes } from '../../../types';
 import { onInputChange } from '../../../utils/dom';
 
@@ -12,7 +12,8 @@ export interface InputRangeProps extends InputPropTypes<number> {
 
 const InputRange: React.FC<InputRangeProps> = (props) => {
 	const { inputStyle, containerStyle } = useInputStyle(props, 'range');
-	const { value, setValue } = useInputValue<number>(props);
+	const { value, setValue } = useInputValue<typeof props.value>(props);
+	const { event } = useInputEvent<typeof props.value>(props, value);
 
 	const onChange = onInputChange((value) => setValue(+value));
 
@@ -23,11 +24,12 @@ const InputRange: React.FC<InputRangeProps> = (props) => {
 				name={props.name}
 				type={'range'}
 				value={value || 0}
-				onChange={onChange}
+				disabled={props.disabled}
 				min={props.min}
 				max={props.max}
-				onFocus={props.onFocus}
-				onBlur={props.onBlur}
+				onChange={onChange}
+				onFocus={event.onFocus}
+				onBlur={event.onBlur}
 			/>
 		</div>
 	)

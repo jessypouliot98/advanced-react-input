@@ -1,17 +1,31 @@
 import React from 'react';
-import { useInputStyle, useInputValue } from '../../../hooks';
-import { complexOption, InputPropTypes, optionList } from '../../../types';
+import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
+import { InputPropTypes, optionList } from '../../../types';
 import { onInputChange } from '../../../utils/dom';
+import { getOption } from '../../../utils/types';
 
 export type types = 'select';
 
 export interface InputSelectProps extends InputPropTypes<string> {
 	options?: optionList<string>,
+	placeholder?: string,
 }
+
+const EMPTY_VALUE = 'ari-null';
 
 const InputSelect: React.FC<InputSelectProps> = (props) => {
 	const { inputStyle, containerStyle } = useInputStyle(props, 'select');
-	const { value, setValue } = useInputValue<string>(props);
+	const { value, setValue } = useInputValue<typeof props.value>(props);
+	const { event } = useInputEvent<typeof props.value>(props, value);
+
+	const onChange = onInputChange((value) => {
+		if (value === EMPTY_VALUE) {
+			setValue(undefined);
+			return;
+		}
+
+		setValue(value);
+	});
 
 	return (
 		<div className={containerStyle} style={props.style}>
@@ -19,17 +33,22 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
 				className={inputStyle}
 				name={props.name}
 				value={value || ''}
-				onChange={onInputChange(setValue)}
-				onFocus={props.onFocus}
-				onBlur={props.onBlur}
+				disabled={props.disabled}
+				onChange={onChange}
+				onFocus={event.onFocus}
+				onBlur={event.onBlur}
 			>
-				{(props.options || []).map(option => {
-					if (typeof option === 'string') {
-						option = { label: option, value: option } as complexOption;
-					}
+				<option value={EMPTY_VALUE}>
+					{props.placeholder || '...'}
+				</option>
+
+				{(props.options || []).map(opt => {
+					const option = getOption(opt);
 
 					return (
-						<option key={option.value} value={option.value}>{option.label}</option>
+						<option key={option.value} value={option.value}>
+							{option.label}
+						</option>
 					)
 				})}
 			</select>
