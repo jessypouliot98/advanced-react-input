@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInputStyle, useInputValue } from '../../../hooks';
+import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
 import { InputPropTypes } from '../../../types';
 import { onInputChange } from '../../../utils/dom';
 
@@ -7,6 +7,7 @@ export type types = 'number' | 'int' | 'uint';
 
 export interface InputNumberProps extends InputPropTypes<number> {
 	type: types,
+	placeholder?: string,
 	min?: number,
 	max?: number,
 }
@@ -25,7 +26,8 @@ const mapStringToNumber = (value: string, type: types): number | undefined => {
 
 const InputNumber: React.FC<InputNumberProps> = (props) => {
 	const { inputStyle, containerStyle } = useInputStyle(props, 'number', props.type);
-	const { value, setValue } = useInputValue<number>(props);
+	const { value, setValue } = useInputValue<typeof props.value>(props);
+	const { event } = useInputEvent<typeof props.value>(props, value);
 
 	const onChange = onInputChange((value) => {
 		setValue(mapStringToNumber(value, props.type));
@@ -38,11 +40,13 @@ const InputNumber: React.FC<InputNumberProps> = (props) => {
 				name={props.name}
 				type={'number'}
 				value={value || ''}
+				placeholder={props.placeholder}
+				disabled={props.disabled}
 				min={props.min}
 				max={props.max}
 				onChange={onChange}
-				onFocus={props.onFocus}
-				onBlur={props.onBlur}
+				onFocus={event.onFocus}
+				onBlur={event.onBlur}
 			/>
 		</div>
 	)

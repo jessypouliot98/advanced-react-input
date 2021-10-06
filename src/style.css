@@ -3,3 +3,21 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.ari-container {
+
+}
+
+.ari-input {
+	@apply ari-w-full;
+	background: none;
+}
+
+.ari-input-textarea {
+	@apply ari-h-16 ari-resize-y;
+	min-height: 3em;
+}
+
+.ari-input-boolean {
+	width: unset;
+}

@@ -7,9 +7,11 @@ import InputFile, { types as fileTypes } from './InputFile/InputFile';
 import InputDate, { types as dateTypes } from './InputDate/InputDate';
 import InputRange, { types as rangeTypes } from './InputRange/InputRange';
 import InputSelect, { types as selectTypes } from './InputSelect/InputSelect';
+import InputCheckbox, { types as checkboxTypes } from './InputCheckbox/InputCheckbox';
+import InputRadio, { types as radioTypes } from './InputRadio/InputRadio';
 import { InputPropTypes } from '../../types'
 
-export type inputTypes = stringTypes | textAreaTypes | numberTypes | booleanTypes | fileTypes | dateTypes | rangeTypes | selectTypes;
+export type inputTypes = stringTypes | textAreaTypes | numberTypes | booleanTypes | fileTypes | dateTypes | rangeTypes | selectTypes | checkboxTypes | radioTypes;
 
 export interface InputProps extends InputPropTypes<any> {
 	type: inputTypes,
@@ -17,6 +19,12 @@ export interface InputProps extends InputPropTypes<any> {
 
 const Input: React.FC<any> = (props) => {
 	switch (props.type) {
+		case 'radio':
+			return <InputRadio {...props} />;
+
+		case 'checkbox':
+			return <InputCheckbox {...props} />;
+
 		case 'select':
 			return <InputSelect {...props} />;
 

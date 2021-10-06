@@ -1,6 +1,6 @@
 {
   "name": "advanced-react-input",
-  "version": "3.0.0-beta",
+  "version": "3.1.0-beta",
   "description": "A scalable TypeScript React component from inputs",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/jessypouliot98/advanced-react-input/issues"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/react": "^17.0.4",
     "@types/react-dom": "^17.0.3",
