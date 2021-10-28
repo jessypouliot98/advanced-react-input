@@ -9,16 +9,20 @@ import InputRange, { types as rangeTypes } from './InputRange/InputRange';
 import InputSelect, { types as selectTypes } from './InputSelect/InputSelect';
 import InputCheckbox, { types as checkboxTypes } from './InputCheckbox/InputCheckbox';
 import InputRadio, { types as radioTypes } from './InputRadio/InputRadio';
+import InputColor, { types as colorTypes } from './InputColor/InputColor';
 import { InputPropTypes } from '../../types'
 
-export type inputTypes = stringTypes | textAreaTypes | numberTypes | booleanTypes | fileTypes | dateTypes | rangeTypes | selectTypes | checkboxTypes | radioTypes;
+export type inputTypes = stringTypes | textAreaTypes | numberTypes | booleanTypes | fileTypes | dateTypes | rangeTypes | selectTypes | checkboxTypes | radioTypes | colorTypes;
 
 export interface InputProps extends InputPropTypes<any> {
 	type: inputTypes,
 }
 
-const Input: React.FC<any> = (props) => {
+const Input: React.FC<InputProps> = (props) => {
 	switch (props.type) {
+		case 'color':
+			return <InputColor {...props} />;
+
 		case 'radio':
 			return <InputRadio {...props} />;
 

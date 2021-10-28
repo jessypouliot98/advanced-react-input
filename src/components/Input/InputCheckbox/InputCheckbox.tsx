@@ -7,7 +7,7 @@ import { getOption } from '../../../utils/types';
 export type types = 'checkbox';
 
 export interface InputCheckboxProps extends InputPropTypes<string[]> {
-	options: optionList<string>,
+	options?: optionList<string>,
 }
 
 const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {

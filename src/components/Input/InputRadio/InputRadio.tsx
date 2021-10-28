@@ -7,7 +7,7 @@ import { getOption } from '../../../utils/types';
 export type types = 'radio';
 
 export interface InputRadioProps extends InputPropTypes<string> {
-	options: optionList<string>,
+	options?: optionList<string>,
 }
 
 const InputRadio: React.FC<InputRadioProps> = (props) => {
