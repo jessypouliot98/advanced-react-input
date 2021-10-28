@@ -1,4 +1,3 @@
-###### (v3.1.0-beta)
 # Advanced React Input
 
 Advanced React Input is a component library to build form in a normalized JavaScript/database oriented way without the HTML form caveats
