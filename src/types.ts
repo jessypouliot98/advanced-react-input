@@ -1,4 +1,4 @@
-export type obj<T = any> = { [key: string]: T };
+export type Dict<T = any> = { [key: string]: T };
 
 export type focusableCallbackProp<V> = { ref: null, value?: V };
 

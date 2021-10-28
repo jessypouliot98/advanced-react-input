@@ -29,7 +29,7 @@ const InputCheckbox: React.FC<InputCheckboxProps> = (props) => {
 
 	return (
 		<div className={containerStyle} style={props.style}>
-			{props.options.map(opt => {
+			{(props.options || []).map(opt => {
 				const option = getOption(opt);
 
 				return (

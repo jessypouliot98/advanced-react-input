@@ -1,22 +1,31 @@
 import React from 'react';
-import InputString, { types as stringTypes } from './InputString/InputString';
-import InputTextArea, { types as textAreaTypes } from './InputTextArea/InputTextArea';
-import InputNumber, { types as numberTypes } from './InputNumber/InputNumber';
-import InputBoolean, { types as booleanTypes } from './InputBoolean/InputBoolean';
-import InputFile, { types as fileTypes } from './InputFile/InputFile';
-import InputDate, { types as dateTypes } from './InputDate/InputDate';
-import InputRange, { types as rangeTypes } from './InputRange/InputRange';
-import InputSelect, { types as selectTypes } from './InputSelect/InputSelect';
-import InputCheckbox, { types as checkboxTypes } from './InputCheckbox/InputCheckbox';
-import InputRadio, { types as radioTypes } from './InputRadio/InputRadio';
-import InputColor, { types as colorTypes } from './InputColor/InputColor';
-import { InputPropTypes } from '../../types'
+import InputString, { InputStringProps, types as stringTypes } from './InputString/InputString';
+import InputTextArea, { InputTextAreaProps, types as textAreaTypes } from './InputTextArea/InputTextArea';
+import InputNumber, { InputNumberProps, types as numberTypes } from './InputNumber/InputNumber';
+import InputBoolean, { InputBooleanProps, types as booleanTypes } from './InputBoolean/InputBoolean';
+import InputFile, { InputFileProps, types as fileTypes } from './InputFile/InputFile';
+import InputDate, { InputDateProps, types as dateTypes } from './InputDate/InputDate';
+import InputRange, { InputRangeProps, types as rangeTypes } from './InputRange/InputRange';
+import InputSelect, { InputSelectProps, types as selectTypes } from './InputSelect/InputSelect';
+import InputCheckbox, { InputCheckboxProps, types as checkboxTypes } from './InputCheckbox/InputCheckbox';
+import InputRadio, { InputRadioProps, types as radioTypes } from './InputRadio/InputRadio';
+import InputColor, { InputColorProps, types as colorTypes } from './InputColor/InputColor';
 
 export type inputTypes = stringTypes | textAreaTypes | numberTypes | booleanTypes | fileTypes | dateTypes | rangeTypes | selectTypes | checkboxTypes | radioTypes | colorTypes;
 
-export interface InputProps extends InputPropTypes<any> {
-	type: inputTypes,
-}
+export type InputProps = (
+	({ type: stringTypes } & InputStringProps) |
+	({ type: textAreaTypes } & InputTextAreaProps) |
+	({ type: numberTypes } & InputNumberProps) |
+	({ type: booleanTypes } & InputBooleanProps) |
+	({ type: fileTypes } & InputFileProps) |
+	({ type: dateTypes } & InputDateProps) |
+	({ type: rangeTypes } & InputRangeProps) |
+	({ type: selectTypes } & InputSelectProps) |
+	({ type: checkboxTypes } & InputCheckboxProps) |
+	({ type: radioTypes } & InputRadioProps) |
+	({ type: colorTypes } & InputColorProps)
+);
 
 const Input: React.FC<InputProps> = (props) => {
 	switch (props.type) {

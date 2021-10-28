@@ -1,17 +1,17 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import { obj } from '../../types';
+import { Dict } from '../../types';
 
-export type setValueFunction = (name: string, value: any) => void;
+export type setValueFunction<F extends {} = Dict> = (name: keyof F, value: any) => void;
 
-export interface FormProps {
+export interface FormProps<F extends {} = Dict> {
 	className?: string,
-	children?: (setValue: setValueFunction, submit: () => void, data: obj) => React.ReactChild,
-	onSubmit?: (data: obj) => void,
+	children?: (setValue: setValueFunction<F>, submit: () => void, data: Partial<F>) => React.ReactChild,
+	onSubmit?: (data: Partial<F>) => void,
 }
 
-const Form: React.FC<FormProps> = (props) => {
-	const [data, setData] = useState<obj>({});
+function Form<F extends {} = Dict>(props: React.PropsWithChildren<FormProps<F>>) {
+	const [data, setData] = useState<Partial<F>>({});
 
 	const setValue: setValueFunction = (name, value) => {
 		setData(prevData => ({
@@ -31,9 +31,13 @@ const Form: React.FC<FormProps> = (props) => {
 
 	return (
 		<form className={clsx(props.className)} onSubmit={onSubmit}>
-			{props.children?.(setValue, onSubmit, data)}
+			{props.children?.(
+				setValue as unknown as setValueFunction<F>,
+				onSubmit,
+				data
+			)}
 		</form>
 	)
 }
 
-export default Form;
+export default Form as typeof Form;

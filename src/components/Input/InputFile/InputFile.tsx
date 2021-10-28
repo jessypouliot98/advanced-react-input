@@ -5,7 +5,7 @@ import { onFileChange } from '../../../utils/dom';
 
 export type types = 'file';
 
-export interface InputFileProps<T> extends InputPropTypes<T> {
+export interface InputFileProps<T = any> extends InputPropTypes<T> {
 	multiple?: boolean,
 	accept?: string,
 }

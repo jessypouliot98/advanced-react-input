@@ -25,7 +25,7 @@ const InputRadio: React.FC<InputRadioProps> = (props) => {
 
 	return (
 		<div className={containerStyle} style={props.style}>
-			{props.options.map(opt => {
+			{(props.options || []).map(opt => {
 				const option = getOption(opt);
 
 				return (
