@@ -1,45 +1,49 @@
 import React from 'react';
-import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
-import { InputPropTypes } from '../../../types';
-import { onInputChange } from '../../../utils/dom';
+import {getType} from "./utils";
+import {OnChangeFunction} from "../types";
+import {getClassName} from "../utils";
+import clsx from "clsx";
 
-export type types = 'string' | 'password' | 'email' | 'url' | 'tel';
+type StringType = 'string' | 'password' | 'email';
 
-export interface InputStringProps extends InputPropTypes<string> {
-	type: types,
-	placeholder?: string,
+type Props<N extends string = string> = {
+  type?: StringType,
+  className?: string,
+  name?: N,
+  value?: string,
+  placeholder?: string,
+  disabled?: boolean,
+  onChange?: OnChangeFunction<string>,
 }
 
-export const mapStringTypesToInputType = (type: types) => {
-	switch (type) {
-		case 'string':
-			return 'text';
+export interface InputStringProps<N extends string = string> extends Props<N> { type: StringType }
 
-		default:
-			return type;
-	}
+export const InputString: React.FC<Props> = (props) => {
+  const {
+    type,
+    className,
+    name,
+    value,
+    placeholder,
+    disabled = false,
+    onChange,
+  } = props;
+  const inputType = getType(type);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = e.target.value || undefined;
+    onChange?.(nextValue);
+  }
+
+  return (
+    <input
+      type={inputType}
+      name={name}
+      className={clsx(getClassName('text', type), className)}
+      value={value || ''}
+      placeholder={placeholder}
+      disabled={disabled}
+      onChange={handleChange}
+    />
+  )
 }
-
-const InputString: React.FC<InputStringProps> = (props) => {
-	const { inputStyle, containerStyle } = useInputStyle(props, 'string', props.type);
-	const { value, setValue } = useInputValue<typeof props.value>(props);
-	const { event } = useInputEvent<typeof props.value>(props, value);
-
-	return (
-		<div className={containerStyle} style={props.style}>
-			<input
-				className={inputStyle}
-				name={props.name}
-				type={mapStringTypesToInputType(props.type)}
-				value={value || ''}
-				placeholder={props.placeholder}
-				disabled={props.disabled}
-				onChange={onInputChange(setValue)}
-				onFocus={event.onFocus}
-				onBlur={event.onBlur}
-			/>
-		</div>
-	)
-}
-
-export default InputString;

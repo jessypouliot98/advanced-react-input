@@ -1,0 +1,98 @@
+@mixin is-touch {
+  @media (pointer: coarse) {
+    @content;
+  }
+}
+
+%bg-disabled {
+  background-color: var(--bg-disabled);
+}
+
+%text-disabled {
+  color: var(--text-disabled);
+}
+
+%p-1 {
+  padding: var(--padding-1);
+}
+
+%mb-1 {
+  margin-bottom: var(--margin-1);
+}
+
+%w-full {
+  width: 100%;
+}
+
+%input-border {
+  border: var(--input-border-size) solid var(--input-border-color);
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 2px 0 var(--color-accent);
+    border: var(--input-border-size) solid var(--input-border-focus-color);
+  }
+}
+
+%input-border-disabled {
+  --input-border-color: var(--border-disabled);
+}
+
+%rounded {
+  border-radius: var(--radius-base);
+}
+
+%min-h-touch {
+  @include is-touch {
+    min-height: var(--min-height-touch);
+  }
+}
+
+%transition {
+  transition-property: color, background, background-color, border, transform;
+  transition-duration: 300ms;
+}
+
+.ari-theme-basic {
+  --size-1: 0.5em;
+  --padding-1: var(--size-1);
+  --margin-1: var(--size-1);
+
+  --color-gray-100: #ececec;
+  --color-gray-200: #cacaca;
+  --color-gray-300: #afafaf;
+  --color-gray-900: #1a1a1a;
+  --color-accent: #4857e4;
+
+  --min-height-touch: 42px;
+  --radius-base: 5px;
+
+  --input-border-size: 1px;
+  --input-border-color: var(--color-gray-900);
+  --input-border-focus-color: var(--color-accent);
+
+  --bg-disabled: var(--color-gray-100);
+  --text-disabled: var(--color-gray-300);
+  --border-disabled: var(--color-gray-300);
+
+
+  .ari-input {
+    box-sizing: border-box;
+    @extend %transition;
+    &::placeholder {
+      @extend %transition;
+    }
+
+    &-text, &-select {
+      @extend %p-1, %mb-1, %input-border, %rounded, %w-full, %min-h-touch;
+
+      &:disabled {
+        @extend %bg-disabled, %text-disabled, %input-border-disabled;
+
+        &::placeholder {
+          @extend %text-disabled
+        }
+      }
+    }
+  }
+}

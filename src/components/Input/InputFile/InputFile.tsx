@@ -1,46 +1,37 @@
 import React from 'react';
-import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
-import { InputPropTypes } from '../../../types';
-import { onFileChange } from '../../../utils/dom';
+import {OnChangeFunction} from "../types";
+import {getClassName} from "../utils";
+import clsx from "clsx";
 
-export type types = 'file';
-
-export interface InputFileProps<T = any> extends InputPropTypes<T> {
-	multiple?: boolean,
-	accept?: string,
-}
-export interface InputSingleFileProps extends InputFileProps<File> {
-	multiple?: false,
+type Props<N extends string = string> = {
+  name?: N,
+  className: string,
+  disabled?: boolean,
+  onChange?: OnChangeFunction<File>,
 }
 
-export interface InputMultipleFilesProps extends InputFileProps<FileList> {
-	multiple: true,
+export interface InputFileProps<N extends string = string> extends Props<N> { type: 'file' }
+
+export const InputFile: React.FC<Props> = (props) => {
+  const {
+    name,
+    className,
+    disabled = false,
+    onChange,
+  } = props;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || undefined;
+    onChange?.(file);
+  }
+
+  return (
+    <input
+      type="file"
+      name={name}
+      className={clsx(getClassName('file'), className)}
+      disabled={disabled}
+      onChange={handleChange}
+    />
+  );
 }
-
-const InputBoolean: React.FC<InputSingleFileProps | InputMultipleFilesProps> = (props) => {
-	const { inputStyle, containerStyle } = useInputStyle(props, 'file');
-	const { value, setValue } = useInputValue<typeof props.value>(props);
-	const { event } = useInputEvent<typeof props.value>(props, value);
-	
-	const onChange = onFileChange(value => {
-		setValue(props.multiple ? (value || undefined) : (value?.[0]));
-	});
-
-	return (
-		<div className={containerStyle} style={props.style}>
-			<input
-				className={inputStyle}
-				name={props.name}
-				type={'file'}
-				multiple={props.multiple}
-				disabled={props.disabled}
-				accept={props.accept}
-				onChange={onChange}
-				onFocus={event.onFocus}
-				onBlur={event.onBlur}
-			/>
-		</div>
-	)
-}
-
-export default InputBoolean;
