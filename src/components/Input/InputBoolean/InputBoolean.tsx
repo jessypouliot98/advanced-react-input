@@ -1,31 +1,44 @@
 import React from 'react';
-import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
-import { InputPropTypes } from '../../../types';
-import { onCheckboxChange } from '../../../utils/dom';
+import {OnChangeFunction} from "../types";
+import {getClassName} from "../utils";
+import clsx from "clsx";
 
-export type types = 'boolean';
-
-export interface InputBooleanProps extends InputPropTypes<boolean> { }
-
-const InputBoolean: React.FC<InputBooleanProps> = (props) => {
-	const { inputStyle, containerStyle } = useInputStyle(props, 'boolean');
-	const { value, setValue } = useInputValue<typeof props.value>(props);
-	const { event } = useInputEvent<typeof props.value>(props, value);
-
-	return (
-		<div className={containerStyle} style={props.style}>
-			<input
-				className={inputStyle}
-				name={props.name}
-				type={'checkbox'}
-				checked={!!value}
-				disabled={props.disabled}
-				onChange={onCheckboxChange(setValue)}
-				onFocus={event.onFocus}
-				onBlur={event.onBlur}
-			/>
-		</div>
-	)
+type Props<N extends string = string> = {
+  name?: N,
+  className?: string,
+  value?: boolean,
+  disabled?: boolean,
+  onChange?: OnChangeFunction<boolean>,
 }
 
-export default InputBoolean;
+export interface InputBooleanProps<N extends string = string> extends Props<N> { type: 'boolean' }
+
+export const InputBoolean: React.FC<Props> = (props) => {
+  const {
+    name,
+    className,
+    value,
+    disabled,
+    onChange,
+  } = props;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) {
+      return;
+    }
+    
+    const nextValue = e.target.checked || false;
+    onChange?.(nextValue);
+  }
+
+  return (
+    <input
+      type={'checkbox'}
+      name={name}
+      className={clsx(getClassName('boolean'), className)}
+      checked={value || false}
+      disabled={disabled}
+      onChange={handleChange}
+    />
+  )
+}

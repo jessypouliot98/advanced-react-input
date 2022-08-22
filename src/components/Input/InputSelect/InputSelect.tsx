@@ -1,59 +1,57 @@
-import React from 'react';
-import { useInputEvent, useInputStyle, useInputValue } from '../../../hooks';
-import { InputPropTypes, optionList } from '../../../types';
-import { onInputChange } from '../../../utils/dom';
-import { getOption } from '../../../utils/types';
+import React, {useMemo} from 'react';
+import {OnChangeFunction, Option} from "../types";
+import {getClassName, getLongOption} from "../utils";
+import clsx from "clsx";
 
-export type types = 'select';
-
-export interface InputSelectProps extends InputPropTypes<string> {
-	options?: optionList<string>,
-	placeholder?: string,
+type Props<N extends string = string> = {
+  name?: N,
+  className?: string,
+  value?: string | null,
+  placeholder?: string,
+  disabled?: boolean,
+  options: Option[],
+  onChange?: OnChangeFunction<string>,
 }
 
-const EMPTY_VALUE = 'ari-null';
+export interface InputSelectProps<N extends string = string> extends Props<N> { type: 'select' }
 
-const InputSelect: React.FC<InputSelectProps> = (props) => {
-	const { inputStyle, containerStyle } = useInputStyle(props, 'select');
-	const { value, setValue } = useInputValue<typeof props.value>(props);
-	const { event } = useInputEvent<typeof props.value>(props, value);
+export const InputSelect: React.FC<Props> = (props) => {
+  const {
+    name,
+    className,
+    value = null,
+    placeholder = '...',
+    disabled = false,
+    options: dataOptions,
+    onChange,
+  } = props;
 
-	const onChange = onInputChange((value) => {
-		if (value === EMPTY_VALUE) {
-			setValue(undefined);
-			return;
-		}
+  const options = useMemo(() => {
+    return [
+      { value: '', label: placeholder },
+      ...dataOptions.map(getLongOption)
+    ];
+  }, [placeholder, dataOptions]);
 
-		setValue(value);
-	});
-
-	return (
-		<div className={containerStyle} style={props.style}>
-			<select
-				className={inputStyle}
-				name={props.name}
-				value={value || ''}
-				disabled={props.disabled}
-				onChange={onChange}
-				onFocus={event.onFocus}
-				onBlur={event.onBlur}
-			>
-				<option value={EMPTY_VALUE}>
-					{props.placeholder || '...'}
-				</option>
-
-				{(props.options || []).map(opt => {
-					const option = getOption(opt);
-
-					return (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					)
-				})}
-			</select>
-		</div>
-	)
+  return (
+    <select
+      name={name}
+      className={clsx(getClassName('select'), className)}
+      value={value || 'null'}
+      disabled={disabled}
+      onChange={(e) => {
+        const value = e.target.value || undefined;
+        onChange?.(value);
+      }}
+    >
+      {options.map((option) => (
+        <option
+          key={option.value}
+          value={option.value}
+        >
+          {option.label}
+        </option>
+      ))}
+    </select>
+  );
 }
-
-export default InputSelect;

@@ -1,43 +1,62 @@
-import clsx from 'clsx';
-import React, { useState } from 'react';
-import { Dict } from '../../types';
+import React, {useCallback, useState} from 'react';
+import {OnChangeFunction} from "../Input/types";
 
-export type setValueFunction<F extends {} = Dict> = (name: keyof F, value: any) => void;
-
-export interface FormProps<F extends {} = Dict> {
-	className?: string,
-	children?: (setValue: setValueFunction<F>, submit: () => void, data: Partial<F>) => React.ReactChild,
-	onSubmit?: (data: Partial<F>) => void,
+export type InputValueProps<F extends {} = any> = {
+  value: any,
+  name: keyof F extends string ? keyof F : string,
+  onChange: OnChangeFunction,
+}
+export type FormRenderableParams<F extends {} = any> = {
+  values: Partial<F>,
+  setValue: <V = F[keyof F]>(value: V | undefined, name: keyof F) => void,
+  handleSubmit: () => void,
+  getInputPropsByName: (name: keyof F) => InputValueProps<F>,
+};
+export type FormRenderable<F extends {} = any> = (params: FormRenderableParams<F>) => React.ReactNode;
+export type FormProps<F extends {} = any> = {
+  children: FormRenderable<F>,
+  className?: string,
+  defaultValues?: Partial<F>,
+  onSubmit: (data: Partial<F>) => void,
 }
 
-function Form<F extends {} = Dict>(props: React.PropsWithChildren<FormProps<F>>) {
-	const [data, setData] = useState<Partial<F>>({});
+export const Form = <F extends Record<string, any> = any>(props: FormProps<F>) => {
+  const {
+    children: renderContent,
+    className,
+    defaultValues,
+    onSubmit,
+  } = props;
+  const [values, setValues] = useState<Partial<F>>(defaultValues || {});
 
-	const setValue: setValueFunction = (name, value) => {
-		setData(prevData => ({
-			...prevData,
-			[name]: value,
-		}));
-	}
-	
-	const onSubmit = (e?: React.FormEvent) => {
-		if (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+  const handleSubmit = useCallback((e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
 
-		props.onSubmit?.(data);
-	}
+    onSubmit(values);
+  }, [values, onSubmit]);
 
-	return (
-		<form className={clsx(props.className)} onSubmit={onSubmit}>
-			{props.children?.(
-				setValue as unknown as setValueFunction<F>,
-				onSubmit,
-				data
-			)}
-		</form>
-	)
+  const handleSetValue: FormRenderableParams['setValue'] = (value, name) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value
+    }));
+  }
+
+  return (
+    <form className={className} onSubmit={handleSubmit}>
+      {renderContent({
+        values: values,
+        setValue: handleSetValue,
+        handleSubmit: handleSubmit,
+        getInputPropsByName: (name) => ({
+          name: name as any,
+          value: values[name],
+          onChange: (v) => handleSetValue(v, name),
+        }),
+      })}
+    </form>
+  )
 }
-
-export default Form as typeof Form;
